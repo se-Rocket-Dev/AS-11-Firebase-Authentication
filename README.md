@@ -1,36 +1,129 @@
-# Flutter Firebase Authenicator
+# Flutter Firebase Auth (Provider + Gradient UI)
+
+แอปตัวอย่างระบบ **Authentication** ด้วย **Firebase Authentication** บน **Flutter**  
+รองรับ **Login / Register / Reset Password** พร้อม **Validation**, **Snackbar**, **State Management ด้วย Provider**, และ **พื้นหลัง Gradient โทนฟ้า–ม่วง**  
+สลับหน้าจออัตโนมัติด้วย `FirebaseAuth.instance.authStateChanges()` (Logout แล้วกลับหน้า Auth ทันที)
+
 ---
-## หน้าแรก
-<img width="295" height="522" alt="Screenshot 2568-09-30 at 10 30 32" src="https://github.com/user-attachments/assets/7c6ef3b4-9bd3-4534-8534-d1f84acb95e9" />
 
-## หน้า register
-<img width="305" height="529" alt="Screenshot 2568-09-30 at 10 30 41" src="https://github.com/user-attachments/assets/d0213d7b-43ec-46d9-910c-b06875ca52dd" />
+## ✨ ฟีเจอร์
 
-## หลัง register
-<img width="325" height="676" alt="Screenshot 2568-09-30 at 11 43 09" src="https://github.com/user-attachments/assets/0fe40896-4c77-4b91-a1da-8dc0a2adb19b" />
-เช็คใน firebase
-<img width="1440" height="607" alt="Screenshot 2568-09-30 at 11 43 52" src="https://github.com/user-attachments/assets/c22dcc83-78c8-487b-ab9f-4357560383ed" />
+- 🔐 **Email/Password Auth** (สมัครสมาชิก/เข้าสู่ระบบ/ออกจากระบบ)
+- 🛠 **Reset Password** (ส่งลิงก์รีเซ็ตผ่านอีเมล)
+- ✅ **Form Validation** + **Snackbar** แจ้งเตือนสวย ๆ
+- 🧠 **Provider (ChangeNotifier)** จัดการ state และ loading
+- 🎨 **Gradient UI** โทนฟ้า–ม่วง + Google Fonts (Prompt)
+- 🧭 ป้องกันการใช้ `context` หลัง widget dispose (`if (!mounted) return;`)
+- 🔁 Routing อัตโนมัติจาก **authStateChanges()** (ไม่ต้องกด back stack เอง)
 
-## ทดสอบ Login
-<img width="335" height="678" alt="Screenshot 2568-09-30 at 11 50 58" src="https://github.com/user-attachments/assets/cc1c9dba-ae81-489a-a739-64d83f761ce8" />
-<img width="313" height="671" alt="Screenshot 2568-09-30 at 12 05 19" src="https://github.com/user-attachments/assets/8971f3c5-c9a9-4e66-9812-a100940b0dd6" />
+---
 
+## 🧱 โครงสร้างโปรเจกต์
 
+```
+lib/
+├─ main.dart                         # ฟัง authStateChanges() แล้วสลับหน้า
+├─ firebase_options.dart             # สร้างจาก flutterfire configure
+├─ providers/
+│  └─ auth_provider.dart             # AppAuthProvider (ChangeNotifier)
+├─ screens/
+│  ├─ auth_screen.dart               # UI ครอบฟอร์ม + ปุ่มสลับ Login/Register
+│  ├─ home_screen.dart               # หน้าหลัก + ปุ่ม Logout
+│  └─ reset_password_screen.dart     # ส่งอีเมลรีเซ็ตรหัสผ่าน
+├─ widgets/
+│  └─ auth_form.dart                 # ฟอร์ม Login/Register + validation
+└─ utils/
+   └─ snack.dart                     # helper แสดง SnackBar
+```
 
+---
 
+## 🧰 เทคโนโลยีที่ใช้
 
-A new Flutter project.
+- **Flutter** (Material 3)
+- **Firebase**: `firebase_auth`, `firebase_core`
+- **State Management**: `provider`
+- **UI/Font**: `google_fonts (Prompt)`
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 การติดตั้ง & รัน
 
-A few resources to get you started if this is your first Flutter project:
+> ต้องติดตั้ง Flutter SDK และมีบัญชี Firebase
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. **โคลนโปรเจกต์**
+   ```bash
+   git clone <repo-url>
+   cd <project-folder>
+   flutter pub get
+   ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# AS-11-Firebase-Authentication
+2. **เชื่อม Firebase**
+   ```bash
+   dart pub global activate flutterfire_cli
+   flutterfire configure
+   ```
+   จะได้ไฟล์ `lib/firebase_options.dart` อัตโนมัติ
+
+3. **Android**
+   - วาง `google-services.json` ที่ `android/app/`
+   - ตรวจ `applicationId` ให้ตรงกับ package ที่ลงทะเบียนใน Firebase
+   - แนะนำเพิ่ม **SHA-1/256 (debug)** ใน Firebase แล้วดาวน์โหลด `google-services.json` ใหม่  
+     ดูค่าได้จาก:
+     ```bash
+     cd android
+     ./gradlew signingReport
+     ```
+   - รัน
+     ```bash
+     flutter run -d <android-device-or-emulator>
+     ```
+   - **แนะนำใช้อีมูเลเตอร์ Google Play (มีไอคอน ▶️ Play Store)**
+
+4. **iOS (ถ้าใช้)**
+   - แก้ `ios/Podfile`:
+     ```ruby
+     platform :ios, '15.0'
+     ```
+   - เปิดโครงการ iOS ด้วย Xcode แล้วให้ `Bundle Identifier` ตรงกับที่ลงทะเบียนใน Firebase
+   - รันบน Simulator/Device (Apple Silicon ใช้ iOS simulator arm64)
+
+---
+
+## 🔄 วิธีใช้งาน (Flow)
+
+1. เปิดแอป → หน้า **Login**
+2. สลับไป **Register** หากยังไม่มีบัญชี
+3. สมัครสำเร็จหรือ Login สำเร็จ → ไป **หน้า Home**
+4. กด **Logout** → แอปกลับหน้า **Auth** อัตโนมัติ (เพราะเราฟัง `authStateChanges()`)
+
+---
+
+## 🧭 แนวทางออกแบบสำคัญ
+
+- ใช้ `StreamBuilder<User?>` ฟัง `FirebaseAuth.instance.authStateChanges()` ใน `main.dart` เพื่อสลับหน้า → ไม่ต้องจัดการ stack เองตอน logout
+- ในงาน async (เช่น signIn/signUp) ใช้ `if (!mounted) return;` ก่อนใช้ `context` เพื่อกัน error หลัง dispose
+- จัดการ loading ใน Provider (`ChangeNotifier`) แล้ว `context.watch()` เพื่อ disable ปุ่ม/แสดงวงกลมโหลด
+
+---
+
+## 🩹 Troubleshooting
+
+- **`[CONFIGURATION_NOT_FOUND]` (Android)**
+  - ใช้ emulator **Google Play**
+  - เพิ่ม **SHA-1/256 (debug)** ที่ Firebase แล้ว **ดาวน์โหลด `google-services.json` ใหม่**
+  - ลบแอปจาก emulator แล้ว `flutter clean && flutter pub get && flutter run`
+- **Gradle plugin version conflict**
+  - อย่าประกาศ `com.google.gms.google-services` ซ้ำหลายเวอร์ชันทั้งใน `settings.gradle.kts` และ `android/build.gradle.kts`
+- **iOS build error: min iOS too low**
+  - ตั้ง `platform :ios, '15.0'` ใน `Podfile` และ `flutter clean && cd ios && pod install && cd ..`
+
+---
+
+## 📄 ใบอนุญาต
+MIT (หรือเติมตามที่คุณต้องการ)
+
+---
+
+## 🙌 เครดิต
+UI/Flow และ README นี้มาจากการปรับปรุงโปรเจกต์จริง เพื่อให้อ่านง่ายและครบถ้วนสำหรับผู้ใช้ใหม่
