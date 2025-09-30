@@ -1,4 +1,17 @@
-# flutter_firebase_auth
+# Flutter Firebase Authenicator
+---
+## หน้าแรก
+<img width="295" height="522" alt="Screenshot 2568-09-30 at 10 30 32" src="https://github.com/user-attachments/assets/7c6ef3b4-9bd3-4534-8534-d1f84acb95e9" />
+
+## หน้า register
+<img width="305" height="529" alt="Screenshot 2568-09-30 at 10 30 41" src="https://github.com/user-attachments/assets/d0213d7b-43ec-46d9-910c-b06875ca52dd" />
+
+## หลัง register
+<img width="325" height="676" alt="Screenshot 2568-09-30 at 11 43 09" src="https://github.com/user-attachments/assets/0fe40896-4c77-4b91-a1da-8dc0a2adb19b" />
+เช็คใน firebase
+<img width="1440" height="607" alt="Screenshot 2568-09-30 at 11 43 52" src="https://github.com/user-attachments/assets/c22dcc83-78c8-487b-ab9f-4357560383ed" />
+
+
 
 A new Flutter project.
 
